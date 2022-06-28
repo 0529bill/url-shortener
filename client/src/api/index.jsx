@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
 const API = axios.create({
-  baseURL: 'https://url-shortener-water.herokuapp.com/',
+  baseURL: VITE_BASE_URL,
 });
 
 export const getUrlRespond = () => API.get('/urlRequest');

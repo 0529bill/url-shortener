@@ -1,4 +1,4 @@
-import Shortener from './shortener';
+import Shortener from '@/components/Shortener';
 
 function Dashboard() {
   return (

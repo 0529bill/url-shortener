@@ -10,12 +10,15 @@ export function useCustomContext() {
 
 export const ContextApiProvider = ({ children }) => {
   const [urlRequestData, setUrlRequestData] = useState(null);
+  const [isSpinning, setIsSpinning] = useState(false);
 
   const urlRequestSent = async (inputValue) => {
     try {
+      setSpinning();
       const urlData = await api.sentUrlRequest(inputValue);
       console.log('urlData', urlData);
       setUrlRequestData(urlData.data.shortenedUrl);
+      setStopSpinning();
     } catch (error) {
       console.log('urlRequestSent_error', error);
       return false;
@@ -24,13 +27,23 @@ export const ContextApiProvider = ({ children }) => {
   };
 
   const getUrlRespond = () => {
+    setSpinning();
     if (urlRequestData) {
+      setStopSpinning();
       return urlRequestData;
     }
+    setStopSpinning();
     return false;
   };
 
+  const setSpinning = () => setIsSpinning(true);
+
+  const setStopSpinning = () => setIsSpinning(false);
+
   const value = {
+    setSpinning,
+    setStopSpinning,
+    isSpinning,
     urlRequestData,
     urlRequestSent,
     getUrlRespond,

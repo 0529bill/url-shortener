@@ -6,7 +6,7 @@ import { useCustomContext } from '@/contextProvider';
 
 const { Title, Paragraph } = Typography;
 const { Search } = Input;
-
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
 function Shortener() {
   const [searchState, setSearchState] = useState(null);
 
@@ -16,11 +16,9 @@ function Shortener() {
     setSearchState(value.target.value);
   };
   const handleEnterPressed = (t) => {
-    console.log('t', t);
-    console.log('searchState', searchState);
     urlRequestSent(searchState);
   };
-  console.log('urlRequestData', urlRequestData);
+  console.log('VITE_BASE_URL', VITE_BASE_URL);
   return (
     <Typography>
       <Title>URL shortener</Title>
@@ -36,11 +34,11 @@ function Shortener() {
       />
       {urlRequestData && (
         <>
-          <Paragraph>{`https://url-shortener-water.herokuapp.com/urlRequest/${urlRequestData}`}</Paragraph>
+          <Paragraph>{`${VITE_BASE_URL}/urlRequest/${urlRequestData}`}</Paragraph>
           <Button
             onClick={() =>
               navigator.clipboard.writeText(
-                `https://url-shortener-water.herokuapp.com/urlRequest/${urlRequestData}`
+                `${VITE_BASE_URL}/urlRequest/${urlRequestData}`
               )
             }
           >
@@ -48,7 +46,7 @@ function Shortener() {
           </Button>
           <div>
             <QRCodeSVG
-              value={`https://url-shortener-water.herokuapp.com/urlRequest/${urlRequestData}`}
+              value={`${VITE_BASE_URL}/urlRequest/${urlRequestData}`}
             />
           </div>
         </>
