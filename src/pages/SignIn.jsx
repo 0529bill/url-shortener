@@ -1,31 +1,31 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input } from "antd";
 
-function SignUp() {
+function SignIn() {
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
     <Form
-      name='basic'
+      name="basic"
       initialValues={{
         remember: true,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      autoComplete='off'
+      autoComplete="off"
     >
       <Form.Item
-        label='Username'
-        name='username'
+        label="Username"
+        name="username"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: "Please input your username!",
           },
         ]}
       >
@@ -33,12 +33,12 @@ function SignUp() {
       </Form.Item>
 
       <Form.Item
-        label='Password'
-        name='password'
+        label="Password"
+        name="password"
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: "Please input your password!",
           },
         ]}
       >
@@ -46,8 +46,8 @@ function SignUp() {
       </Form.Item>
 
       <Form.Item
-        name='remember'
-        valuePropName='checked'
+        name="remember"
+        valuePropName="checked"
         wrapperCol={{
           offset: 8,
           span: 16,
@@ -62,7 +62,7 @@ function SignUp() {
           span: 16,
         }}
       >
-        <Button type='primary' htmlType='submit'>
+        <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
@@ -70,4 +70,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignIn;

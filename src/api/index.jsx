@@ -1,9 +1,11 @@
-import axios from 'axios';
-const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
+import { URLS } from "@/constants";
+import axios from "axios";
 const API = axios.create({
-  baseURL: VITE_BASE_URL,
+  baseURL: URLS.BASE_URL,
+  timeout: 20000,
 });
 
-export const getUrlRespond = () => API.get('/urlRequest');
+export const getUrlRespond = () => API.get("/urlRequest");
 export const sentUrlRequest = (urlRequest) =>
-  API.post('/urlRequest', { url: urlRequest });
+  API.post("/urlRequest", { url: urlRequest });
+export const createUser = (userInfo) => API.post("/users", { userInfo });

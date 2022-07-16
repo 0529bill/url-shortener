@@ -1,9 +1,9 @@
-import { Layout as AntdLayout } from 'antd';
-import Footer from '@/components/Footer';
-import { Link } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
-import styled from 'styled-components';
-
+import { Layout as AntdLayout } from "antd";
+import { COLOR } from "@/constants";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import styled from "styled-components";
+console.log("COLOR", COLOR);
 const {
   Content: AntdContent,
   Footer: AntdFooter,
@@ -12,7 +12,9 @@ const {
 
 const StyledAntdLayout = styled(AntdLayout)`
   min-height: 100vh;
-  font-family: 'Source Code Pro', monospace;
+  font-family: "Source Code Pro", monospace;
+  font-size: 16px;
+  /* color: COLOR_BLACK; */
 `;
 
 const StyledAntdHeader = styled(AntdHeader)`
@@ -33,10 +35,9 @@ const StyledAntdFooter = styled(AntdFooter)`
 function Layout({ children }) {
   return (
     <StyledAntdLayout>
-      <StyledAntdHeader>
-        <Link to='/'>TinyURl</Link>
-        <Navbar />
-      </StyledAntdHeader>
+      {/* <StyledAntdHeader> */}
+      <Navbar />
+      {/* </StyledAntdHeader> */}
       <StyledAntdContent>{children}</StyledAntdContent>
       <StyledAntdFooter>
         <Footer />

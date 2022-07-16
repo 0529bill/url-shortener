@@ -1,13 +1,10 @@
-import { Input } from 'antd';
-import styled from 'styled-components';
+import ErrorText from "@/components/shared/ErrorText";
+import { Input } from "antd";
+import styled from "styled-components";
 const StyledInput = styled(Input)``;
 
 const InputWrapper = styled.div`
   margin: 15px 0;
-`;
-
-const ErrorText = styled.div`
-  color: red;
 `;
 
 /**
@@ -18,7 +15,6 @@ const ErrorText = styled.div`
  */
 
 function AntdInput({ text, isError, ...props }) {
-  console.log('isError', isError);
   return (
     <InputWrapper>
       {text && text()}

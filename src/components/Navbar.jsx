@@ -1,52 +1,67 @@
-import { Button, Menu } from 'antd';
-import { MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Menu } from "antd";
+import { MailOutlined, SettingOutlined } from "@ant-design/icons";
 
-import { Link } from 'react-router-dom';
-import { MenuOutlined } from '@ant-design/icons';
-import styled from 'styled-components';
-import { useState } from 'react';
+import { Link } from "react-router-dom";
+import { MenuOutlined } from "@ant-design/icons";
+import styled from "styled-components";
+import { useState } from "react";
 
 const StyledMenu = styled(Menu)`
   border-bottom: none;
+  font-size: 1.3rem;
+  padding: 30px;
 `;
+
+const renderUser = () => {
+  return <span style={{ marginLeft: "auto" }}>user</span>;
+};
+
 const items = [
   {
-    label: 'Why TinyURl',
-    key: 'brand',
+    label: <Link to="/">TinyURl</Link>,
+    key: "TinyURL",
+  },
+  {
+    label: "Why us?",
+    key: "brand",
     icon: <MailOutlined />,
   },
   {
-    label: 'Features',
-    key: 'Features',
+    label: "Features",
+    key: "Features",
   },
   {
-    label: 'Contact Us',
-    key: 'Contact',
+    label: "Contact Us",
+    key: "Contact",
   },
   {
-    label: <Link to='/user/login'>login</Link>,
-    key: 'SignIn',
+    label: <Link to="/user/login">login</Link>,
+    key: "SignIn",
   },
   {
-    label: <Link to='/user/signup'>SignIn</Link>,
-    key: 'SignIn',
+    label: <Link to="/user/signIn">SignIn</Link>,
+    key: "SignIn",
+  },
+  {
+    // label: <Link to="/user/signIn">SignIn</Link>,
+    label: renderUser(),
+    key: "SignIn",
   },
 ];
 
 const Navbar = () => {
-  const [current, setCurrent] = useState('mail');
+  const [current, setCurrent] = useState("mail");
 
   const onClick = (e) => {
-    console.log('click ', e);
+    console.log("click ", e);
     setCurrent(e.key);
   };
 
   const ellipsisIcon = (
     <Button
-      size='large'
+      size="large"
       icon={<MenuOutlined />}
-      //   onClick={handleToggle}
-      className='nav-responsive-btn'
+      className="nav-responsive-btn"
     ></Button>
   );
 
@@ -54,10 +69,8 @@ const Navbar = () => {
     <StyledMenu
       onClick={onClick}
       selectedKeys={[current]}
-      mode='horizontal'
+      mode="horizontal"
       items={items}
-      //   inlineCollapsed={false}
-      //   overflowedIndicator={ellipsisIcon}
     />
   );
 };
