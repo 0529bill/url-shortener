@@ -4,6 +4,8 @@ import { MailOutlined, SettingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { MenuOutlined } from "@ant-design/icons";
 import styled from "styled-components";
+import { useCustomContext } from "@/contextProvider";
+import { useEffect } from "react";
 import { useState } from "react";
 
 const StyledMenu = styled(Menu)`
@@ -35,7 +37,7 @@ const items = [
     key: "Contact",
   },
   {
-    label: <Link to="/user/login">login</Link>,
+    label: <Link to="/user/login">SignUp</Link>,
     key: "SignIn",
   },
   {
@@ -50,6 +52,7 @@ const items = [
 ];
 
 const Navbar = () => {
+  const { currentUser } = useCustomContext();
   const [current, setCurrent] = useState("mail");
 
   const onClick = (e) => {
@@ -64,6 +67,11 @@ const Navbar = () => {
       className="nav-responsive-btn"
     ></Button>
   );
+
+  useEffect(() => {
+    let a = currentUser();
+    console.log("a", a);
+  }, []);
 
   return (
     <StyledMenu

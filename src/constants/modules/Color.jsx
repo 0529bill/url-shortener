@@ -1,3 +1,4 @@
 export default {
-  COLOR_BLACK: "black",
-};
+	COLOR_BLACK: 'black',
+	RED: 'red',
+}
