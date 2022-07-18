@@ -9,7 +9,7 @@ const { Search } = Input;
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
 function Shortener() {
   const [searchState, setSearchState] = useState(null);
-
+  console.log('useCustomContext123', useCustomContext);
   const { urlRequestSent, urlRequestData } = useCustomContext();
 
   const handleSearchChange = (value) => {

@@ -1,65 +1,86 @@
-import { Button, Menu } from 'antd';
-import { MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Menu } from 'antd'
+import { MailOutlined, SettingOutlined } from '@ant-design/icons'
 
-import { Link } from 'react-router-dom';
-import { MenuOutlined } from '@ant-design/icons';
-import styled from 'styled-components';
-import { useState } from 'react';
+import { Link } from 'react-router-dom'
+import { MenuOutlined } from '@ant-design/icons'
+import styled from 'styled-components'
+import { useCustomContext } from '@/contextProvider'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 const StyledMenu = styled(Menu)`
-  border-bottom: none;
-`;
-const items = [
-  {
-    label: 'Why TinyURl',
-    key: 'brand',
-    icon: <MailOutlined />,
-  },
-  {
-    label: 'Features',
-    key: 'Features',
-  },
-  {
-    label: 'Contact Us',
-    key: 'Contact',
-  },
-  {
-    label: <Link to='/user/login'>login</Link>,
-    key: 'SignIn',
-  },
-  {
-    label: <Link to='/user/signup'>SignIn</Link>,
-    key: 'SignIn',
-  },
-];
+	border-bottom: none;
+	font-size: 1.3rem;
+	padding: 30px;
+`
 
 const Navbar = () => {
-  const [current, setCurrent] = useState('mail');
+	const { currentUser, userSignOut } = useCustomContext()
+	const [current, setCurrent] = useState('mail')
+	const [targetedUser, setCurrentUser] = useState(null)
 
-  const onClick = (e) => {
-    console.log('click ', e);
-    setCurrent(e.key);
-  };
+	const onClick = (e) => {
+		setCurrent(e.key)
+	}
 
-  const ellipsisIcon = (
-    <Button
-      size='large'
-      icon={<MenuOutlined />}
-      //   onClick={handleToggle}
-      className='nav-responsive-btn'
-    ></Button>
-  );
+	const renderUser = (user) => {
+		if (!user) return
+		const {
+			result: { username },
+		} = user
+		return (
+			username && (
+				<span
+					onClick={() => {
+						userSignOut()
+						setCurrentUser(null)
+					}}
+					style={{ marginLeft: 'auto' }}
+				>{`sign out`}</span>
+			)
+		)
+	}
+	const items = [
+		{
+			label: <Link to="/">TinyURl</Link>,
+			key: 'TinyURL',
+		},
+		{
+			label: 'Why us?',
+			key: 'brand',
+			icon: <MailOutlined />,
+		},
+		{
+			label: 'Features',
+			key: 'Features',
+		},
+		{
+			label: 'Contact Us',
+			key: 'Contact',
+		},
+		targetedUser
+			? {
+					label: renderUser(targetedUser),
+					key: 'SignOut',
+			  }
+			: {
+					label: <Link to="/user/signIn">SignIn</Link>,
+					key: 'SignIn',
+			  },
+		targetedUser
+			? null
+			: {
+					label: <Link to="/user/login">SignUp</Link>,
+					key: 'SignUp',
+			  },
+	]
 
-  return (
-    <StyledMenu
-      onClick={onClick}
-      selectedKeys={[current]}
-      mode='horizontal'
-      items={items}
-      //   inlineCollapsed={false}
-      //   overflowedIndicator={ellipsisIcon}
-    />
-  );
-};
+	useEffect(() => {
+		let user = currentUser()
+		setCurrentUser(user)
+	}, [currentUser])
 
-export default Navbar;
+	return <StyledMenu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+}
+
+export default Navbar

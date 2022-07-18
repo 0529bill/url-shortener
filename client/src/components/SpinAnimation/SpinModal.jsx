@@ -1,12 +1,11 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-import SpinIcon from './SpinIcon';
+import SpinIcon from "./SpinIcon";
 
 const SpinContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: 1000000;
 
   ${({ isLoading }) =>
     isLoading &&
@@ -18,7 +17,7 @@ const SpinIconWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 1000;
+  z-index: 10000;
 `;
 
 const Mask = styled.div`
@@ -27,6 +26,7 @@ const Mask = styled.div`
   height: 100%;
   background: #fff;
   opacity: 0.8;
+  z-index: 10000;
 `;
 
 function SpinModal({ isLoading, children }) {
