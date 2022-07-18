@@ -30,9 +30,11 @@ function LoginPage() {
 	const [loginError, setLoginError] = useState({
 		username: null,
 		password: null,
+		email: null,
 	})
 	const [passedResult, setPassedResult] = useState(null)
 	const { createUser } = useCustomContext()
+
 	let history = useHistory()
 	localStorage.setItem('myCat', 'Tom')
 	const handleSubmit = async () => {
@@ -73,7 +75,7 @@ function LoginPage() {
 
 		if (isPass) {
 			const userInfo = { username, password, email }
-			let passedResult = await createUser({
+			await createUser({
 				userInfo,
 				setPassedResult,
 				history,
@@ -91,26 +93,24 @@ function LoginPage() {
 					isError={errorMessageHandler('error', loginError.username?.msg)}
 					value={username}
 					onChange={({ target: { value } }) => setUsername(value)}
-					text={() => <div>Username</div>}
+					text={() => <Text isRequired={true}>Username</Text>}
 				/>
 				<AntdInput
 					isError={errorMessageHandler('error', loginError.email?.msg)}
 					value={email}
 					onChange={({ target: { value } }) => setEmail(value)}
-					text={() => <div>Email</div>}
+					text={() => <Text isRequired={true}>Email</Text>}
 				/>
 				<AntdInput
 					isError={errorMessageHandler('error', loginError.password?.msg)}
 					value={password}
 					onChange={({ target: { value } }) => setPassword(value)}
-					text={() => <div>Password</div>}
+					text={() => <Text isRequired={true}>Password</Text>}
 				/>
-				Forgot your password?
 				<AntdButton onClick={handleSubmit}>Sign up</AntdButton>
 				<ErrorText style={{ margin: '10px 0' }}>{passedResult && passedResult?.msg}</ErrorText>
 				By signing up with an account, you agree to TinyURL's Terms of Service, Privacy Policy and Acceptable
 				Use Policy.
-				<Text>dsds</Text>
 			</StyledContainer>
 		</>
 	)

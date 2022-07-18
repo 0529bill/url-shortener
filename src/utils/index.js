@@ -1,9 +1,10 @@
-import emailTester from "./modules/emailTester";
-import errorMessageHandler from "./modules/errorMessageHandler";
-import handleValidation from "./modules/handleValidation";
+import emailTester from './modules/emailTester'
+import errorMessageHandler from './modules/errorMessageHandler'
+import handleValidation from './modules/handleValidation'
 
-export default {
-  emailTester,
-  handleValidation,
-  errorMessageHandler,
-};
+const utils = {
+	emailTester,
+	handleValidation,
+	errorMessageHandler,
+}
+export default utils

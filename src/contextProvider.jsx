@@ -5,9 +5,7 @@ import { createContext, useContext, useState } from 'react'
 import AlertModal from '@/components/AlertModal'
 import { RTNCODES } from '@/constants'
 import decode from 'jwt-decode'
-import { useEffect } from 'react'
 
-console.log('RTNCODES', RTNCODES)
 const ContextApi = createContext()
 
 export function useCustomContext() {
@@ -17,7 +15,6 @@ export function useCustomContext() {
 export const ContextApiProvider = ({ children }) => {
 	const [urlRequestData, setUrlRequestData] = useState(null)
 	const [isSpinning, setIsSpinning] = useState(false)
-	const [userInfo, setUserInfo] = useState(null)
 
 	const urlRequestSent = async (inputValue) => {
 		setSpinning()
@@ -51,24 +48,16 @@ export const ContextApiProvider = ({ children }) => {
 	}
 
 	const createUser = async ({ userInfo, setPassedResult, history }) => {
-		console.log('userInfo', userInfo)
-		console.log('localStorage', localStorage)
 		setSpinning()
 		try {
 			const infoData = await api.createUser(userInfo)
 			console.log('infoData', infoData)
-			// { message: "success", result, token }
 			setStopSpinning()
 			setAlert({ type: 'success', content: 'User created!' })
 			setPassedResult(null)
-			// localStorage.setItem(
-			//   "userProfile",
-			//   JSON.stringify({ ...infoData?.data })
-			// );
 			return history.push('/user/signIn')
 		} catch (error) {
 			console.log('createUser_error', error)
-			console.log('RTNCODES', RTNCODES)
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.DuplicateUser) {
 				setStopSpinning()
 
@@ -81,27 +70,45 @@ export const ContextApiProvider = ({ children }) => {
 		}
 	}
 
-	const userSignIn = async (userInfo) => {
+	const userSignIn = async ({ userInfo, setPassedResult }) => {
+		setSpinning()
 		try {
 			let signInResult = await api.userSignIn(userInfo)
-			console.log('signInResult', signInResult)
+			localStorage.setItem('userProfile', JSON.stringify({ ...signInResult?.data }))
+			setAlert({ type: 'success', content: 'User signed In!' })
+			setStopSpinning()
 		} catch (error) {
 			console.log('userSignIn_error', error)
+			if (error?.headers?.rtn === RTNCODES.RtnCodes.UserNotFound) {
+				setStopSpinning()
+				setAlert({ type: 'error', content: 'User not found!' })
+				return setPassedResult({ msg: 'User not found!' })
+			}
+			setStopSpinning()
+			setAlert({ type: 'error', content: 'Failed to sign in!' })
+			return setPassedResult({ msg: 'Failed to sign in!' })
 		}
 	}
 
 	const currentUser = () => {
 		let userData = JSON.parse(localStorage.getItem('userProfile'))
-		console.log('userData', userData)
-		let token = userData?.token
-		console.log('token', token)
-		if (token) {
+		if (userData) {
+			console.log('userData', userData)
+			let token = userData?.token
+			console.log('token', token)
+
 			const decodedToken = decode(token)
-			console.log('decodedToken', decodedToken)
-			return true
+			if (decodedToken.exp * 1000 > new Date().getTime()) {
+				return userData
+			}
 		}
-		return false
+		return null
 	}
+
+	const userSignOut = () => {
+		localStorage.clear()
+	}
+
 	const value = {
 		setSpinning,
 		setStopSpinning,
@@ -113,6 +120,7 @@ export const ContextApiProvider = ({ children }) => {
 		createUser,
 		userSignIn,
 		currentUser,
+		userSignOut,
 	}
 
 	return <ContextApi.Provider value={value}>{children}</ContextApi.Provider>
