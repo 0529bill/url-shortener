@@ -1,5 +1,5 @@
 function Footer() {
-  return 'Ant Design ©2018 Created by Ant UED';
+	return 'TinyURL ©2022 Created by water-tw'
 }
 
-export default Footer;
+export default Footer

@@ -106,7 +106,7 @@ export const ContextApiProvider = ({ children }) => {
 	}
 
 	const userSignOut = () => {
-		localStorage.clear()
+		return localStorage.clear()
 	}
 
 	const value = {

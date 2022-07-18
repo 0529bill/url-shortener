@@ -36,7 +36,6 @@ function LoginPage() {
 	const { createUser } = useCustomContext()
 
 	let history = useHistory()
-	localStorage.setItem('myCat', 'Tom')
 	const handleSubmit = async () => {
 		const loginValidation = [
 			{

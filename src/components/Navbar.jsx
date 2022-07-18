@@ -14,12 +14,12 @@ const StyledMenu = styled(Menu)`
 	padding: 30px;
 `
 
-const Navbar = () => {
+function Navbar() {
 	const { currentUser, userSignOut } = useCustomContext()
-	const [current, setCurrent] = useState('mail')
+	const [current, setCurrent] = useState('TinyURL')
 	const [targetedUser, setCurrentUser] = useState(null)
 
-	const onClick = (e) => {
+	const handleMenuClick = (e) => {
 		setCurrent(e.key)
 	}
 
@@ -40,39 +40,39 @@ const Navbar = () => {
 			)
 		)
 	}
+
+	const logInItems = targetedUser
+		? [
+				{
+					label: <Link to="/create">Create</Link>,
+					key: 'Create',
+				},
+				{
+					label: renderUser(targetedUser),
+					key: 'SignOut',
+				},
+		  ]
+		: [
+				{
+					label: <Link to="/user/signIn">SignIn</Link>,
+					key: 'SignIn',
+				},
+				{
+					label: <Link to="/user/login">SignUp</Link>,
+					key: 'SignUp',
+				},
+		  ]
+
 	const items = [
 		{
 			label: <Link to="/">TinyURl</Link>,
 			key: 'TinyURL',
 		},
 		{
-			label: 'Why us?',
-			key: 'brand',
-			icon: <MailOutlined />,
-		},
-		{
-			label: 'Features',
-			key: 'Features',
-		},
-		{
-			label: 'Contact Us',
+			label: <Link to="/contact">Contact Us</Link>,
 			key: 'Contact',
 		},
-		targetedUser
-			? {
-					label: renderUser(targetedUser),
-					key: 'SignOut',
-			  }
-			: {
-					label: <Link to="/user/signIn">SignIn</Link>,
-					key: 'SignIn',
-			  },
-		targetedUser
-			? null
-			: {
-					label: <Link to="/user/login">SignUp</Link>,
-					key: 'SignUp',
-			  },
+		...logInItems,
 	]
 
 	useEffect(() => {
@@ -80,7 +80,7 @@ const Navbar = () => {
 		setCurrentUser(user)
 	}, [currentUser])
 
-	return <StyledMenu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+	return <StyledMenu selectedKeys={[current]} mode="horizontal" items={items} />
 }
 
 export default Navbar
