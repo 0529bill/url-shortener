@@ -20,7 +20,6 @@ const Navbar = () => {
 	const [targetedUser, setCurrentUser] = useState(null)
 
 	const onClick = (e) => {
-		console.log('click ', e)
 		setCurrent(e.key)
 	}
 
@@ -29,7 +28,6 @@ const Navbar = () => {
 		const {
 			result: { username },
 		} = user
-		console.log('username', username)
 		return (
 			username && (
 				<span
@@ -79,7 +77,6 @@ const Navbar = () => {
 
 	useEffect(() => {
 		let user = currentUser()
-		console.log('user', user)
 		setCurrentUser(user)
 	}, [currentUser])
 

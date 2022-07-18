@@ -1,28 +1,27 @@
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
-import styled from 'styled-components';
+import { LoadingOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
+import styled from 'styled-components'
 
 const SpinWrapper = styled.div`
-  justify-content: center;
-  align-items: center;
-  display: flex;
-`;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+`
 
 function SpinIcon(isSpinning) {
-  console.log('isSpinning', isSpinning);
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 50,
-      }}
-      spin
-    />
-  );
-  return (
-    <SpinWrapper>
-      <Spin indicator={antIcon} spinning={true} />
-    </SpinWrapper>
-  );
+	const antIcon = (
+		<LoadingOutlined
+			style={{
+				fontSize: 50,
+			}}
+			spin
+		/>
+	)
+	return (
+		<SpinWrapper>
+			<Spin indicator={antIcon} spinning={true} />
+		</SpinWrapper>
+	)
 }
 
-export default SpinIcon;
+export default SpinIcon
