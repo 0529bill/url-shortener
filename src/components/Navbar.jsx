@@ -77,10 +77,11 @@ function Navbar() {
 
 	useEffect(() => {
 		let user = currentUser()
+		console.log('user', user)
 		setCurrentUser(user)
 	}, [currentUser])
 
-	return <StyledMenu selectedKeys={[current]} mode="horizontal" items={items} />
+	return <StyledMenu onClick={handleMenuClick} selectedKeys={[current]} mode="horizontal" items={items} />
 }
 
 export default Navbar

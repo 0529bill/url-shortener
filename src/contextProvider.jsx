@@ -16,13 +16,17 @@ export const ContextApiProvider = ({ children }) => {
 	const [urlRequestData, setUrlRequestData] = useState(null)
 	const [isSpinning, setIsSpinning] = useState(false)
 
-	const urlRequestSent = async (inputValue) => {
+	const setSpinning = () => setIsSpinning(true)
+
+	const urlRequestSent = async ({ searchState, username }) => {
 		setSpinning()
 		try {
-			const urlData = await api.sentUrlRequest(inputValue)
+			const urlData = await api.sentUrlRequest({ urlRequest: searchState, username })
+			console.log('urlData', urlData)
 			setUrlRequestData(urlData.data.shortenedUrl)
 			setStopSpinning()
 		} catch (error) {
+			console.log('urlRequestSent_error', error)
 			setStopSpinning()
 			return false
 		}
@@ -38,8 +42,6 @@ export const ContextApiProvider = ({ children }) => {
 		setStopSpinning()
 		return false
 	}
-
-	const setSpinning = () => setIsSpinning(true)
 
 	const setStopSpinning = () => setIsSpinning(false)
 

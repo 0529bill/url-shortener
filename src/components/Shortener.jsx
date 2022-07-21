@@ -25,13 +25,18 @@ const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
 function Shortener() {
 	const [searchState, setSearchState] = useState(null)
 	const [generateQRcode, setGenerateQRcode] = useState(false)
-	const { urlRequestSent, urlRequestData } = useCustomContext()
+	const { urlRequestSent, urlRequestData, currentUser, setAlert } = useCustomContext()
 
 	const handleSearchChange = (value) => {
 		setSearchState(value.target.value)
 	}
-	const handleEnterPressed = (t) => {
-		urlRequestSent(searchState)
+	const handleEnterPressed = async () => {
+		console.log('searchState', searchState)
+		let user = currentUser()
+		let username = user?.result?.username
+		console.log('username', username)
+		if (!username) return setAlert({ type: 'error', content: 'cannot find user info' })
+		urlRequestSent({ searchState, username })
 	}
 
 	return (
