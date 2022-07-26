@@ -14,7 +14,6 @@ import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
 import utils from '@/utils'
 
-console.log('COLOR', COLOR)
 const { Title, Paragraph } = Typography
 
 const { errorMessageHandler, emailTester } = utils

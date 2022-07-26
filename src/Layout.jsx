@@ -11,7 +11,7 @@ const StyledAntdLayout = styled(AntdLayout)`
 	font-size: 16px;
 	/* color: COLOR_BLACK; */
 `
-console.log('BREAK_POINT', BREAK_POINT)
+
 const StyledAntdHeader = styled(AntdHeader)`
 	display: flex;
 	background: white;

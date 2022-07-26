@@ -31,10 +31,8 @@ function Shortener() {
 		setSearchState(value.target.value)
 	}
 	const handleEnterPressed = async () => {
-		console.log('searchState', searchState)
 		let user = currentUser()
 		let username = user?.result?.username
-		console.log('username', username)
 		if (!username) return setAlert({ type: 'error', content: 'cannot find user info' })
 		urlRequestSent({ searchState, username })
 	}

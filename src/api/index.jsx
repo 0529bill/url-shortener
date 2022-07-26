@@ -6,7 +6,6 @@ const API = axios.create({
 })
 
 API.interceptors.request.use((req) => {
-	console.log('localStorage.getItem("userProfile")', localStorage.getItem('userProfile'))
 	if (localStorage.getItem('userProfile')) {
 		req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('userProfile')).token}`
 	}

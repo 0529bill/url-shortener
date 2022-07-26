@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"isolatedModules": true,
+		"useDefineForClassFields": true,
+		"jsx": "react-jsx",
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"moduleResolution": "node"
+	}
+}

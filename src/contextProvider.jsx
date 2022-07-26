@@ -22,11 +22,10 @@ export const ContextApiProvider = ({ children }) => {
 		setSpinning()
 		try {
 			const urlData = await api.sentUrlRequest({ urlRequest: searchState, username })
-			console.log('urlData', urlData)
+
 			setUrlRequestData(urlData.data.shortenedUrl)
 			setStopSpinning()
 		} catch (error) {
-			console.log('urlRequestSent_error', error)
 			setStopSpinning()
 			return false
 		}
@@ -53,13 +52,11 @@ export const ContextApiProvider = ({ children }) => {
 		setSpinning()
 		try {
 			const infoData = await api.createUser(userInfo)
-			console.log('infoData', infoData)
 			setStopSpinning()
 			setAlert({ type: 'success', content: 'User created!' })
 			setPassedResult(null)
 			return history.push('/user/signIn')
 		} catch (error) {
-			console.log('createUser_error', error)
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.DuplicateUser) {
 				setStopSpinning()
 
@@ -80,7 +77,6 @@ export const ContextApiProvider = ({ children }) => {
 			setAlert({ type: 'success', content: 'User signed In!' })
 			setStopSpinning()
 		} catch (error) {
-			console.log('userSignIn_error', error)
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.UserNotFound) {
 				setStopSpinning()
 				setAlert({ type: 'error', content: 'User not found!' })
@@ -95,9 +91,7 @@ export const ContextApiProvider = ({ children }) => {
 	const currentUser = () => {
 		let userData = JSON.parse(localStorage.getItem('userProfile'))
 		if (userData) {
-			console.log('userData', userData)
 			let token = userData?.token
-			console.log('token', token)
 
 			const decodedToken = decode(token)
 			if (decodedToken.exp * 1000 > new Date().getTime()) {

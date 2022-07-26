@@ -20,7 +20,6 @@ function App() {
 		let user = currentUser()
 		setCurrentUser(user)
 	}, [currentUser])
-	console.log('targetCurrentUser', targetCurrentUser)
 	return (
 		<GoogleOAuthProvider>
 			<BrowserRouter>

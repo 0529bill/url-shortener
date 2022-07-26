@@ -26,6 +26,7 @@ function SignIn() {
 		password: null,
 	})
 	const [passedResult, setPassedResult] = useState(null)
+	const [forgetPassword, setforgetPassword] = useState(false)
 	const { userSignIn } = useCustomContext()
 	const { errorMessageHandler } = utils
 
@@ -59,6 +60,7 @@ function SignIn() {
 		})
 
 		setSignInError(loginValidationError)
+		setforgetPassword(false)
 
 		if (isPass) {
 			const userInfo = { username, password }
@@ -85,7 +87,17 @@ function SignIn() {
 				onChange={({ target: { value } }) => setPassword(value)}
 				text={() => <Text isRequired={true}>Password</Text>}
 			/>
-			Forget password?
+			<div style={{ display: 'flex' }}>
+				Forget password?{' '}
+				<a onClick={() => setforgetPassword(true)} style={{ margin: '0 10px' }}>
+					click here.
+				</a>
+			</div>
+			{forgetPassword && (
+				<div style={{ color: 'red' }}>
+					This is only a DEMO project, contact me at 0529bill@gmail.com to revoke gmail access token.
+				</div>
+			)}
 			<AntdButton onClick={handleSubmit}>Submit</AntdButton>
 			<ErrorText style={{ margin: '10px 0' }}>{passedResult && passedResult?.msg}</ErrorText>
 		</StyledContainer>

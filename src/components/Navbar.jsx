@@ -77,7 +77,6 @@ function Navbar() {
 
 	useEffect(() => {
 		let user = currentUser()
-		console.log('user', user)
 		setCurrentUser(user)
 	}, [currentUser])
 
