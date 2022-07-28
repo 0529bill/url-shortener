@@ -6,6 +6,7 @@ import { MenuOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
 const StyledMenu = styled(Menu)`
@@ -15,13 +16,33 @@ const StyledMenu = styled(Menu)`
 `
 
 function Navbar() {
+	const location = useLocation()
 	const { currentUser, userSignOut } = useCustomContext()
 	const [current, setCurrent] = useState('TinyURL')
 	const [targetedUser, setCurrentUser] = useState(null)
-
+	console.log('location', location)
 	const handleMenuClick = (e) => {
 		setCurrent(e.key)
 	}
+
+	const handleSelectedKeys = () => {
+		const navKey = ['create', 'signOut', 'contact', 'user/signIn', 'user/login', '', 'analytics']
+		const currentPath = location?.pathname.slice(1)
+		console.log('currentPath', currentPath)
+		if (navKey.includes(currentPath)) {
+			if (currentPath === '') {
+				return 'TinyURL'
+			} else if (currentPath === 'user/signIn') {
+				return 'signIn'
+			} else if (currentPath === 'user/login') {
+				return 'signUp'
+			}
+			return currentPath
+		}
+		return null
+	}
+
+	console.log('handleSelectedKeys', handleSelectedKeys())
 
 	const renderUser = (user) => {
 		if (!user) return
@@ -45,21 +66,25 @@ function Navbar() {
 		? [
 				{
 					label: <Link to="/create">Create</Link>,
-					key: 'Create',
+					key: 'create',
 				},
 				{
 					label: renderUser(targetedUser),
-					key: 'SignOut',
+					key: 'signOut',
 				},
 		  ]
 		: [
 				{
+					label: <Link to="/contact">Contact Us</Link>,
+					key: 'contact',
+				},
+				{
 					label: <Link to="/user/signIn">SignIn</Link>,
-					key: 'SignIn',
+					key: 'signIn',
 				},
 				{
 					label: <Link to="/user/login">SignUp</Link>,
-					key: 'SignUp',
+					key: 'signUp',
 				},
 		  ]
 
@@ -69,8 +94,8 @@ function Navbar() {
 			key: 'TinyURL',
 		},
 		{
-			label: <Link to="/contact">Contact Us</Link>,
-			key: 'Contact',
+			label: <Link to="/analytics">Analytics</Link>,
+			key: 'Analytics',
 		},
 		...logInItems,
 	]
@@ -80,7 +105,7 @@ function Navbar() {
 		setCurrentUser(user)
 	}, [currentUser])
 
-	return <StyledMenu onClick={handleMenuClick} selectedKeys={[current]} mode="horizontal" items={items} />
+	return <StyledMenu onClick={handleMenuClick} selectedKeys={handleSelectedKeys()} mode="horizontal" items={items} />
 }
 
 export default Navbar

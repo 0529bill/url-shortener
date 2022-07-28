@@ -8,6 +8,7 @@ import Text from '@/components/shared/Text'
 import handleValidation from 'react-client-validation'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
+import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
 import utils from '@/utils'
 
@@ -29,6 +30,7 @@ function SignIn() {
 	const [forgetPassword, setforgetPassword] = useState(false)
 	const { userSignIn } = useCustomContext()
 	const { errorMessageHandler } = utils
+	const history = useHistory()
 
 	const handleSubmit = async () => {
 		const loginValidation = [
@@ -89,7 +91,7 @@ function SignIn() {
 			/>
 			<div style={{ display: 'flex' }}>
 				Forget password?{' '}
-				<a onClick={() => setforgetPassword(true)} style={{ margin: '0 10px' }}>
+				<a onClick={() => history.push('/user/forgetPassword')} style={{ margin: '0 10px' }}>
 					click here.
 				</a>
 			</div>

@@ -15,6 +15,7 @@ export function useCustomContext() {
 export const ContextApiProvider = ({ children }) => {
 	const [urlRequestData, setUrlRequestData] = useState(null)
 	const [isSpinning, setIsSpinning] = useState(false)
+	const [urlByUsernameData, setUrlByUsernameData] = useState(null)
 
 	const setSpinning = () => setIsSpinning(true)
 
@@ -105,6 +106,24 @@ export const ContextApiProvider = ({ children }) => {
 		return localStorage.clear()
 	}
 
+	const getUrlByUsername = async (userInfo) => {
+		console.log('userInfo', userInfo)
+		if (!userInfo) return
+		try {
+			const respond = await api.getUrlByUsername(userInfo)
+			const respondData = respond?.data?.url
+			if (respondData) {
+				setUrlByUsernameData(respondData)
+				return respondData
+			} else {
+				return null
+			}
+		} catch (error) {
+			console.log('error', error)
+			return null
+		}
+	}
+
 	const value = {
 		setSpinning,
 		setStopSpinning,
@@ -112,6 +131,7 @@ export const ContextApiProvider = ({ children }) => {
 		setAlert,
 		urlRequestData,
 		urlRequestSent,
+		getUrlByUsername,
 		getUrlRespond,
 		createUser,
 		userSignIn,

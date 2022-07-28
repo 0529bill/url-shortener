@@ -12,10 +12,12 @@ const StyledTag = styled.div`
 	}
 `
 
-function Text({ children, isRequired = false }) {
+function Text({ children, isRequired = false, ...props }) {
 	return (
 		<>
-			<StyledTag isRequired={isRequired}>{children}</StyledTag>
+			<StyledTag isRequired={isRequired} {...props}>
+				{children}
+			</StyledTag>
 		</>
 	)
 }
