@@ -69,7 +69,7 @@ function SignIn() {
 			await userSignIn({
 				userInfo,
 				setPassedResult,
-				// history,
+				history,
 			})
 		}
 	}
@@ -91,7 +91,7 @@ function SignIn() {
 			/>
 			<div style={{ display: 'flex' }}>
 				Forget password?{' '}
-				<a onClick={() => history.push('/user/forgetPassword')} style={{ margin: '0 10px' }}>
+				<a href="/user/forgetPassword" style={{ margin: '0 10px' }}>
 					click here.
 				</a>
 			</div>

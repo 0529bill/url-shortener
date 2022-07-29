@@ -20,7 +20,6 @@ function Navbar() {
 	const { currentUser, userSignOut } = useCustomContext()
 	const [current, setCurrent] = useState('TinyURL')
 	const [targetedUser, setCurrentUser] = useState(null)
-	console.log('location', location)
 	const handleMenuClick = (e) => {
 		setCurrent(e.key)
 	}
@@ -28,7 +27,6 @@ function Navbar() {
 	const handleSelectedKeys = () => {
 		const navKey = ['create', 'signOut', 'contact', 'user/signIn', 'user/login', '', 'analytics']
 		const currentPath = location?.pathname.slice(1)
-		console.log('currentPath', currentPath)
 		if (navKey.includes(currentPath)) {
 			if (currentPath === '') {
 				return 'TinyURL'
@@ -41,8 +39,6 @@ function Navbar() {
 		}
 		return null
 	}
-
-	console.log('handleSelectedKeys', handleSelectedKeys())
 
 	const renderUser = (user) => {
 		if (!user) return

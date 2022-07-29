@@ -69,21 +69,16 @@ function ResetPassword({ match }) {
 		setLoginError(loginValidationError)
 
 		if (isPass) {
-			// const userInfo = { username, password, email }
-			const respond = await resetPassword({
-				// userInfo,
-				// setPassedResult,
-				// history,
+			await resetPassword({
 				password,
 				newPassword,
 				pathParams,
 			})
-			console.log('respond', respond)
-			if (respond?.status === '200') {
-				history.push('/user/signIn')
-			} else {
-				setError('Reset failed')
-			}
+				.then(() => history.push('/user/signIn'))
+				.catch(({ response }) => {
+					AlertModal({ type: 'error', content: response?.data?.message })
+					return setError('Reset failed')
+				})
 		}
 	}
 	return (

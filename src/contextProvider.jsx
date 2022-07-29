@@ -70,13 +70,14 @@ export const ContextApiProvider = ({ children }) => {
 		}
 	}
 
-	const userSignIn = async ({ userInfo, setPassedResult }) => {
+	const userSignIn = async ({ userInfo, setPassedResult, history }) => {
 		setSpinning()
 		try {
 			let signInResult = await api.userSignIn(userInfo)
 			localStorage.setItem('userProfile', JSON.stringify({ ...signInResult?.data }))
 			setAlert({ type: 'success', content: 'User signed In!' })
 			setStopSpinning()
+			history.push('/create')
 		} catch (error) {
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.UserNotFound) {
 				setStopSpinning()

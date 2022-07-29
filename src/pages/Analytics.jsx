@@ -1,9 +1,29 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 import { Doughnut, getElementAtEvent } from 'react-chartjs-2'
+import { Table, Typography } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 
+import { Link } from 'react-router-dom'
 import randomColor from 'randomcolor'
+import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
+
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+
+const { Title } = Typography
+
+const TableContainer = styled.div`
+	overflow: scroll;
+	margin-bottom: 200px;
+`
+
+const ChartContainer = styled.div`
+	overflow: scroll;
+`
+
+const TargetElementContainer = styled.div`
+	margin: 50px 0;
+`
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 function Analytics() {
@@ -21,10 +41,8 @@ function Analytics() {
 		const chartColor = randomColor({
 			count: dataLength,
 		})
-		console.log('chartColor', chartColor)
 
 		const chartData = dataSet.map((t) => t.clicks)
-		console.log('chartData', chartData)
 
 		const chartLabel = dataSet.map((t) => t.shortUrl)
 		return {
@@ -36,22 +54,18 @@ function Analytics() {
 
 	const renderTargetElement = (targetElementLabel) => {
 		const [actualUrl] = urlRespond.filter((t) => t.shortUrl === targetElementLabel)
-		console.log('actualUrl', actualUrl)
 		return (
-			<>
+			<TargetElementContainer>
 				<div>selectedURl: {targetElementLabel} </div>
 				<div>{actualUrl?.fullUrl}</div>
-			</>
+			</TargetElementContainer>
 		)
 	}
 
-	console.log('urlRespond', urlRespond)
 	useEffect(() => {
 		const fetchData = async (username) => {
 			const respond = await getUrlByUsername(username)
-			console.log('urlRespond', respond)
 			const formattedData = handleFormatData(respond)
-			console.log('formattedData', formattedData)
 			setUrlRespond(respond)
 			setUrlByUsernameData(formattedData)
 		}
@@ -59,13 +73,10 @@ function Analytics() {
 		if (user?.result?.username !== targetedUser?.result?.username) {
 			setCurrentUser(user)
 			const username = user?.result?.username
-			console.log('username123', username)
 			if (username) {
 				fetchData(username)
 			}
 		}
-		console.log('user', user)
-		console.log('targetedUser', targetedUser)
 	}, [currentUser, getUrlByUsername, targetedUser])
 
 	const data = {
@@ -80,11 +91,56 @@ function Analytics() {
 			},
 		],
 	}
-	const renderAnalyticsDetail = () => {
+
+	const columns = [
+		{
+			title: 'fullUrl',
+			dataIndex: 'fullUrl',
+			key: 'fullUrl',
+			render: (text, record) => {
+				const fullUrl = record?.fullUrl
+				return (
+					<a target="_blank" rel="noreferrer" href={record.fullUrl}>
+						{fullUrl}
+					</a>
+				)
+			},
+		},
+		{
+			title: 'shortUrl',
+			dataIndex: 'shortUrl',
+			key: 'shortUrl',
+			render: (text, record) => {
+				const url = VITE_BASE_URL + '/urlRequest/' + record.shortUrl
+				return (
+					<a target="_blank" rel="noreferrer" href={url}>
+						{url}
+					</a>
+				)
+			},
+		},
+		{
+			title: 'clicks',
+			dataIndex: 'clicks',
+			key: 'clicks',
+		},
+	]
+
+	const renderTableData = () => {
 		return (
-			<>
-				Signed In
+			<TableContainer>
+				<Title>All email</Title>
+				<Table dataSource={urlRespond} columns={columns} pagination={false} />
+			</TableContainer>
+		)
+	}
+
+	const renderDoughnutChart = () => {
+		return (
+			<ChartContainer>
+				<Title>Email chart</Title>
 				<Doughnut
+					style={{ margin: '50px 80px' }}
 					ref={chartRef}
 					onClick={(e) => {
 						if (!chartRef.current) return
@@ -95,6 +151,15 @@ function Analytics() {
 					data={data}
 				/>
 				{targetElementLabel ? renderTargetElement(targetElementLabel) : null}
+			</ChartContainer>
+		)
+	}
+
+	const renderAnalyticsDetail = () => {
+		return (
+			<>
+				{renderTableData()}
+				{renderDoughnutChart()}
 			</>
 		)
 	}

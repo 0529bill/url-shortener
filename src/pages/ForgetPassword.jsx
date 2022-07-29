@@ -1,3 +1,4 @@
+import AlertModal from '@/components/AlertModal'
 import AntdButton from '@/components/shared/AntdButton'
 import AntdInput from '@/components/shared/AntdInput'
 import Text from '@/components/shared/Text'
@@ -9,7 +10,7 @@ import utils from '@/utils'
 
 const { errorMessageHandler, emailTester } = utils
 const origin = window.location.origin
-console.log('loc', origin)
+
 function ForgetPassword() {
 	const [email, setEmail] = useState(null)
 	const [loginError, setLoginError] = useState({ email: null })
@@ -32,16 +33,14 @@ function ForgetPassword() {
 		setLoginError(loginValidationError)
 
 		if (isPass) {
-			const respond = await forgetPasswordEmail({
+			await forgetPasswordEmail({
 				email,
 				origin,
 			})
-			console.log('respond', respond)
-			// await createUser({
-			// 	userInfo,
-			// 	setPassedResult,
-			// 	history,
-			// })
+				.then((resp) => {
+					AlertModal({ type: 'success', content: 'Email sent! Check your email!' })
+				})
+				.catch(({ response }) => AlertModal({ type: 'error', content: response?.data?.message }))
 		}
 	}
 	return (
