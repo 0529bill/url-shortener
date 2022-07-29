@@ -108,7 +108,6 @@ export const ContextApiProvider = ({ children }) => {
 	}
 
 	const getUrlByUsername = async (userInfo) => {
-		console.log('userInfo', userInfo)
 		if (!userInfo) return
 		try {
 			const respond = await api.getUrlByUsername(userInfo)
@@ -120,7 +119,6 @@ export const ContextApiProvider = ({ children }) => {
 				return null
 			}
 		} catch (error) {
-			console.log('error', error)
 			return null
 		}
 	}
