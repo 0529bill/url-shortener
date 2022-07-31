@@ -1,8 +1,8 @@
 import { Button, Input, Typography } from 'antd'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import Container from '@/components/style/Container'
-import { QRCodeSVG } from 'qrcode.react'
+import { QRCodeCanvas } from 'qrcode.react'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
 
@@ -25,11 +25,23 @@ const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
 function Shortener() {
 	const [searchState, setSearchState] = useState(null)
 	const [generateQRcode, setGenerateQRcode] = useState(false)
+	const canvasRef = useRef()
 	const { urlRequestSent, urlRequestData, currentUser, setAlert } = useCustomContext()
 
 	const handleSearchChange = (value) => {
 		setSearchState(value.target.value)
 	}
+
+	const handleDownloadQRcode = () => {
+		const canvas = canvasRef.current.children[0]?.children[0]
+		const pngFile = canvas.toDataURL('image/png')
+
+		const downloadLink = document.createElement('a')
+		downloadLink.download = 'QrCode'
+		downloadLink.href = `${pngFile}`
+		downloadLink.click()
+	}
+
 	const handleEnterPressed = async () => {
 		let user = currentUser()
 		let username = user?.result?.username
@@ -60,9 +72,14 @@ function Shortener() {
 					</StyledButton>
 					<StyledButton onClick={() => setGenerateQRcode(true)}>Generate QRcode</StyledButton>
 					{generateQRcode && (
-						<div>
-							<QRCodeSVG value={`${VITE_BASE_URL}/urlRequest/${urlRequestData}`} />
-						</div>
+						<>
+							<div ref={canvasRef}>
+								<div>
+									<QRCodeCanvas value={`${VITE_BASE_URL}/urlRequest/${urlRequestData}`} />
+								</div>
+							</div>
+							<Button onClick={handleDownloadQRcode}>Download QRcode</Button>
+						</>
 					)}
 				</UrlContainer>
 			)}

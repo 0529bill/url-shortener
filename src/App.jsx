@@ -16,7 +16,7 @@ import SpinModal from '@/components/SpinAnimation/SpinModal'
 import { useCustomContext } from '@/contextProvider'
 
 function App() {
-	const { setSpinning, setStopSpinning, isSpinning, currentUser, alertMessage } = useCustomContext()
+	const { isSpinning, currentUser } = useCustomContext()
 	const [targetCurrentUser, setCurrentUser] = useState(null)
 
 	useEffect(() => {
