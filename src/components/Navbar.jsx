@@ -1,7 +1,7 @@
 import { Button, Menu } from 'antd'
+import { Link, useHistory } from 'react-router-dom'
 import { MailOutlined, SettingOutlined } from '@ant-design/icons'
 
-import { Link } from 'react-router-dom'
 import { MenuOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
@@ -17,6 +17,7 @@ const StyledMenu = styled(Menu)`
 
 function Navbar() {
 	const location = useLocation()
+	const history = useHistory()
 	const { currentUser, userSignOut } = useCustomContext()
 	const [current, setCurrent] = useState('TinyURL')
 	const [targetedUser, setCurrentUser] = useState(null)
@@ -51,6 +52,7 @@ function Navbar() {
 					onClick={() => {
 						userSignOut()
 						setCurrentUser(null)
+						history.push('/')
 					}}
 					style={{ marginLeft: 'auto' }}
 				>{`sign out`}</span>

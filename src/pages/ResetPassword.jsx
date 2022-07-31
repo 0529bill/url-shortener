@@ -16,10 +16,11 @@ const { errorMessageHandler, emailTester } = utils
 function ResetPassword({ match }) {
 	const history = useHistory()
 	const [loginError, setLoginError] = useState({
-		password: null,
+		email: null,
+		newPassword: null,
 	})
-	const [error, setError] = useState('set')
-	const [password, setPassword] = useState(null)
+	const [error, setError] = useState(null)
+	const [email, setEmail] = useState(null)
 	const [newPassword, setNewPassword] = useState(null)
 
 	const handleSubmit = async () => {
@@ -30,14 +31,9 @@ function ResetPassword({ match }) {
 		}
 		const loginValidation = [
 			{
-				index: 'password',
-				condition: [password?.length < 10],
-				errorMessage: 'Password must be larger than 10 letters!',
-			},
-			{
-				index: 'password',
-				condition: [!password],
-				errorMessage: 'Password is not valid!',
+				index: 'email',
+				condition: [!email],
+				errorMessage: 'email is not valid!',
 			},
 			{
 				index: 'newPassword',
@@ -48,16 +44,6 @@ function ResetPassword({ match }) {
 				index: 'newPassword',
 				condition: [!newPassword],
 				errorMessage: 'Password is not valid!',
-			},
-			{
-				index: 'password',
-				condition: [newPassword === password],
-				errorMessage: "Password can't be the same!",
-			},
-			{
-				index: 'newPassword',
-				condition: [newPassword === password],
-				errorMessage: "Password can't be the same!",
 			},
 		]
 
@@ -70,7 +56,7 @@ function ResetPassword({ match }) {
 
 		if (isPass) {
 			await resetPassword({
-				password,
+				email,
 				newPassword,
 				pathParams,
 			})
@@ -85,10 +71,10 @@ function ResetPassword({ match }) {
 		<>
 			<Title>Reset new password</Title>
 			<AntdInput
-				isError={errorMessageHandler('error', loginError.password?.msg)}
-				value={password}
-				onChange={({ target: { value } }) => setPassword(value)}
-				text={() => <Text isRequired={true}>Your old password:</Text>}
+				isError={errorMessageHandler('error', loginError.email?.msg)}
+				value={email}
+				onChange={({ target: { value } }) => setEmail(value)}
+				text={() => <Text isRequired={true}>Your email:</Text>}
 			/>
 			<AntdInput
 				isError={errorMessageHandler('error', loginError.newPassword?.msg)}
