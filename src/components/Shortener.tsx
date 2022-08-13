@@ -1,5 +1,5 @@
 import { Button, Input, Typography } from 'antd'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import Container from '@/components/style/Container'
 import { QRCodeCanvas } from 'qrcode.react'
@@ -21,19 +21,20 @@ const UrlContainer = styled(Container)`
 	margin: 30px 10px;
 	flex-direction: column;
 `
+
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
 function Shortener() {
-	const [searchState, setSearchState] = useState(null)
+	const [searchState, setSearchState] = useState('')
 	const [generateQRcode, setGenerateQRcode] = useState(false)
-	const canvasRef = useRef()
+	const canvasRef = useRef<HTMLDivElement>(null)
 	const { urlRequestSent, urlRequestData, currentUser, setAlert } = useCustomContext()
 
-	const handleSearchChange = (value) => {
+	const handleSearchChange = (value: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchState(value.target.value)
 	}
 
 	const handleDownloadQRcode = () => {
-		const canvas = canvasRef.current.children[0]?.children[0]
+		const canvas = canvasRef.current!.children[0]?.children[0] as HTMLCanvasElement
 		const pngFile = canvas.toDataURL('image/png')
 
 		const downloadLink = document.createElement('a')

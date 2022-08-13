@@ -1,5 +1,5 @@
 function Footer() {
-	return 'TinyURL ©2022 Created by water-tw'
+	return <div>'TinyURL ©2022 Created by water-tw'</div>
 }
 
 export default Footer

@@ -7,8 +7,9 @@ const SpinWrapper = styled.div`
 	align-items: center;
 	display: flex;
 `
+type Props = { isSpinning: boolean }
 
-function SpinIcon(isSpinning) {
+const SpinIcon: React.FC<Props> = ({ isSpinning }: Props) => {
 	const antIcon = (
 		<LoadingOutlined
 			style={{
@@ -19,7 +20,7 @@ function SpinIcon(isSpinning) {
 	)
 	return (
 		<SpinWrapper>
-			<Spin indicator={antIcon} spinning={true} />
+			<Spin indicator={antIcon} spinning={isSpinning} />
 		</SpinWrapper>
 	)
 }

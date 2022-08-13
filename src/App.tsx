@@ -24,25 +24,25 @@ function App() {
 		setCurrentUser(user)
 	}, [currentUser])
 	return (
-		<GoogleOAuthProvider>
-			<BrowserRouter>
-				<SpinModal isLoading={isSpinning}>
-					<Layout>
-						<Switch>
-							<Route path="/user/login" exact component={LoginPage} />
-							<Route path="/user/signIn" exact component={SignInPage} />
-							<Route path="/user/forgetPassword/" exact component={ForgetPassword} />
-							<Route path="/user/resetPassword/:username" exact component={ResetPassword} />
-							<Route path="/contact" exact component={ContactPage} />
-							<Route path="/analytics" exact component={Analytics} />
-							{targetCurrentUser ? <Route path="/create" exact component={CreatePage} /> : null}
-							<Route path="/" exact component={Main} />
-							<Route path="*" component={NotFound} />
-						</Switch>
-					</Layout>
-				</SpinModal>
-			</BrowserRouter>
-		</GoogleOAuthProvider>
+		// <GoogleOAuthProvider>
+		<BrowserRouter>
+			<SpinModal isLoading={isSpinning}>
+				<Layout>
+					<Switch>
+						<Route path="/user/login" exact component={LoginPage} />
+						<Route path="/user/signIn" exact component={SignInPage} />
+						<Route path="/user/forgetPassword/" exact component={ForgetPassword} />
+						<Route path="/user/resetPassword/:username" exact component={ResetPassword} />
+						<Route path="/contact" exact component={ContactPage} />
+						<Route path="/analytics" exact component={Analytics} />
+						{targetCurrentUser ? <Route path="/create" exact component={CreatePage} /> : null}
+						<Route path="/" exact component={Main} />
+						<Route path="*" component={NotFound} />
+					</Switch>
+				</Layout>
+			</SpinModal>
+		</BrowserRouter>
+		// </GoogleOAuthProvider>
 	)
 }
 

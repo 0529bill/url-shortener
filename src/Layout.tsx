@@ -3,6 +3,7 @@ import { BREAK_POINT } from '@/constants'
 import { COLOR } from '@/constants'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
+import React from 'react'
 import styled from 'styled-components'
 const { Content: AntdContent, Footer: AntdFooter, Header: AntdHeader } = AntdLayout
 const StyledAntdLayout = styled(AntdLayout)`
@@ -39,7 +40,7 @@ const StyledAntdFooter = styled(AntdFooter)`
 	background: white;
 `
 
-function Layout({ children }) {
+function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<StyledAntdLayout>
 			{/* <StyledAntdHeader> */}

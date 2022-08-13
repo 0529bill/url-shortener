@@ -1,25 +1,46 @@
+import * as React from 'react'
 import * as api from '@/api/index'
 
-import { createContext, useContext, useState } from 'react'
+import { ContextProps, UserInfo, UserProps, UserRespond } from '@/interfaces'
+import decode, { JwtPayload } from 'jwt-decode'
 
 import AlertModal from '@/components/AlertModal'
+import { AxiosResponse } from 'axios'
 import { RTNCODES } from '@/constants'
-import decode from 'jwt-decode'
 
-const ContextApi = createContext()
+// import React, { createContext, useContext, useState } from 'react'
+
+const { createContext, useContext, useState } = React
+const ContextApi = createContext<ContextProps>({
+	setSpinning: () => null,
+	setStopSpinning: () => null,
+	isSpinning: false,
+	setAlert: '',
+	urlRequestData: '',
+	urlRequestSent: async () => false,
+	getUrlByUsername: async () => null,
+	getUrlRespond: () => false,
+	createUser: async () => {},
+	userSignIn: async () => {},
+	currentUser: () => null,
+	userSignOut: () => null,
+})
 
 export function useCustomContext() {
 	return useContext(ContextApi)
 }
+interface Props {
+	children: React.ReactNode
+}
 
-export const ContextApiProvider = ({ children }) => {
+export const ContextApiProvider = ({ children }: Props) => {
 	const [urlRequestData, setUrlRequestData] = useState(null)
 	const [isSpinning, setIsSpinning] = useState(false)
-	const [urlByUsernameData, setUrlByUsernameData] = useState(null)
+	const [urlByUsernameData, setUrlByUsernameData] = useState<UserRespond[] | null>()
 
 	const setSpinning = () => setIsSpinning(true)
 
-	const urlRequestSent = async ({ searchState, username }) => {
+	const urlRequestSent = async ({ searchState, username }: { searchState: string; username: string }) => {
 		setSpinning()
 		try {
 			const urlData = await api.sentUrlRequest({ urlRequest: searchState, username })
@@ -45,39 +66,47 @@ export const ContextApiProvider = ({ children }) => {
 
 	const setStopSpinning = () => setIsSpinning(false)
 
-	const setAlert = (alertProps) => {
+	const setAlert = (alertProps: { type: string; content: string }) => {
 		return AlertModal(alertProps)
 	}
 
-	const createUser = async ({ userInfo, setPassedResult, history }) => {
+	const createUser = async ({ userInfo, setPassedResult, history }: UserProps) => {
 		setSpinning()
 		try {
 			const infoData = await api.createUser(userInfo)
 			setStopSpinning()
 			setAlert({ type: 'success', content: 'User created!' })
 			setPassedResult(null)
-			return history.push('/user/signIn')
+			history.push('/user/signIn')
+			return
 		} catch (error) {
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.DuplicateUser) {
 				setStopSpinning()
 
 				setAlert({ type: 'error', content: 'Duplicated user' })
-				return setPassedResult({ msg: 'Duplicated user' })
+				setPassedResult({ msg: 'Duplicated user' })
+				return
 			}
 			setStopSpinning()
 			setAlert({ type: 'error', content: 'Failed to create User' })
-			return setPassedResult({ msg: 'Failed to create User' })
+			setPassedResult({ msg: 'Failed to create User' })
+			return
 		}
 	}
 
-	const userSignIn = async ({ userInfo, setPassedResult, history }) => {
+	const userSignIn = async ({ userInfo, setPassedResult, history }: UserProps) => {
+		console.log('userInfo', userInfo)
+		console.log('setPassedResult', setPassedResult)
+
 		setSpinning()
 		try {
-			let signInResult = await api.userSignIn(userInfo)
+			let signInResult: AxiosResponse = await api.userSignIn(userInfo)
+			console.log('signInResult', signInResult)
 			localStorage.setItem('userProfile', JSON.stringify({ ...signInResult?.data }))
 			setAlert({ type: 'success', content: 'User signed In!' })
 			setStopSpinning()
 			history.push('/create')
+			return
 		} catch (error) {
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.UserNotFound) {
 				setStopSpinning()
@@ -86,17 +115,18 @@ export const ContextApiProvider = ({ children }) => {
 			}
 			setStopSpinning()
 			setAlert({ type: 'error', content: 'Failed to sign in!' })
-			return setPassedResult({ msg: 'Failed to sign in!' })
+			setPassedResult({ msg: 'Failed to sign in!' })
+			return
 		}
 	}
 
 	const currentUser = () => {
-		let userData = JSON.parse(localStorage.getItem('userProfile'))
+		let userData: UserInfo = JSON.parse(localStorage.getItem('userProfile') || 'false')
+		console.log('userData', userData)
 		if (userData) {
 			let token = userData?.token
-
-			const decodedToken = decode(token)
-			if (decodedToken.exp * 1000 > new Date().getTime()) {
+			const decodedToken = decode<JwtPayload>(token)
+			if (decodedToken?.exp && decodedToken.exp * 1000 > new Date().getTime()) {
 				return userData
 			}
 		}
@@ -104,15 +134,18 @@ export const ContextApiProvider = ({ children }) => {
 	}
 
 	const userSignOut = () => {
-		return localStorage.clear()
+		localStorage.clear()
+		return
 	}
 
-	const getUrlByUsername = async (userInfo) => {
-		if (!userInfo) return
+	const getUrlByUsername = async (userInfo: string): Promise<UserRespond[] | null> => {
+		if (!userInfo) return null
 		try {
 			const respond = await api.getUrlByUsername(userInfo)
-			const respondData = respond?.data?.url
+			console.log('respond', respond)
+			const respondData: UserRespond[] = respond?.data?.url
 			if (respondData) {
+				console.log('respondData', respondData)
 				setUrlByUsernameData(respondData)
 				return respondData
 			} else {

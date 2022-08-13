@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
+		"types": ["vite/client"],
+		"module": "esnext",
 		"isolatedModules": true,
 		"useDefineForClassFields": true,
 		"jsx": "react-jsx",
@@ -8,6 +10,15 @@
 		"noImplicitThis": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"moduleResolution": "node"
-	}
+		"moduleResolution": "node",
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"]
+		},
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"noEmit": true
+	},
+	"exclude": ["./src/assets", "node_modules"]
 }

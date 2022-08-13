@@ -2,6 +2,7 @@ import { Button, Menu } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import { MailOutlined, SettingOutlined } from '@ant-design/icons'
 
+import { MenuInfo } from 'rc-menu/lib/interface'
 import { MenuOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
@@ -21,7 +22,7 @@ function Navbar() {
 	const { currentUser, userSignOut } = useCustomContext()
 	const [current, setCurrent] = useState('TinyURL')
 	const [targetedUser, setCurrentUser] = useState(null)
-	const handleMenuClick = (e) => {
+	const handleMenuClick = (e: MenuInfo) => {
 		setCurrent(e.key)
 	}
 
@@ -38,7 +39,7 @@ function Navbar() {
 			}
 			return currentPath
 		}
-		return null
+		return ''
 	}
 
 	const renderUser = (user) => {
@@ -103,7 +104,9 @@ function Navbar() {
 		setCurrentUser(user)
 	}, [currentUser])
 
-	return <StyledMenu onClick={handleMenuClick} selectedKeys={handleSelectedKeys()} mode="horizontal" items={items} />
+	return (
+		<StyledMenu onClick={handleMenuClick} selectedKeys={[handleSelectedKeys()]} mode="horizontal" items={items} />
+	)
 }
 
 export default Navbar

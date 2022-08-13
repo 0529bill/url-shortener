@@ -1,10 +1,11 @@
 import { Divider, Typography } from 'antd'
+import handleValidation, { ErrorResult, ErrorReturn } from 'react-client-validation'
 
 import AlertModal from '@/components/AlertModal'
 import AntdButton from '@/components/shared/AntdButton'
 import AntdInput from '@/components/shared/AntdInput'
+import { RouteComponentProps } from 'react-router'
 import Text from '@/components/shared/Text'
-import handleValidation from 'react-client-validation'
 import { resetPassword } from '@/api/index'
 import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
@@ -13,15 +14,16 @@ import utils from '@/utils'
 const { Title, Paragraph } = Typography
 const { errorMessageHandler, emailTester } = utils
 
-function ResetPassword({ match }) {
+interface TopicDetailProps extends RouteComponentProps<string> {
+	// any other props (leave empty if none)
+}
+
+function ResetPassword<TopicDetailProps>({ match }: { match: TopicDetailProps }) {
 	const history = useHistory()
-	const [loginError, setLoginError] = useState({
-		email: null,
-		newPassword: null,
-	})
-	const [error, setError] = useState(null)
-	const [email, setEmail] = useState(null)
-	const [newPassword, setNewPassword] = useState(null)
+	const [loginError, setLoginError] = useState<ErrorReturn>({ email: { msg: null }, newPassword: { msg: null } })
+	const [error, setError] = useState<string>('')
+	const [email, setEmail] = useState<string>('')
+	const [newPassword, setNewPassword] = useState<string>('')
 
 	const handleSubmit = async () => {
 		const pathParams = match?.params?.username

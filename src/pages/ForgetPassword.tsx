@@ -1,10 +1,11 @@
+import handleValidation, { ErrorResult, ErrorReturn } from 'react-client-validation'
+
 import AlertModal from '@/components/AlertModal'
 import AntdButton from '@/components/shared/AntdButton'
 import AntdInput from '@/components/shared/AntdInput'
 import Text from '@/components/shared/Text'
 import { Typography } from 'antd'
 import { forgetPasswordEmail } from '@/api/index'
-import handleValidation from 'react-client-validation'
 import { useState } from 'react'
 import utils from '@/utils'
 
@@ -12,8 +13,8 @@ const { errorMessageHandler, emailTester } = utils
 const origin = window.location.origin
 
 function ForgetPassword() {
-	const [email, setEmail] = useState(null)
-	const [loginError, setLoginError] = useState({ email: null })
+	const [email, setEmail] = useState<string>('')
+	const [loginError, setLoginError] = useState<ErrorReturn>({ email: { msg: null } })
 	const { Title } = Typography
 
 	const handleSubmit = async () => {
@@ -29,7 +30,7 @@ function ForgetPassword() {
 			errorArray: loginValidation,
 			defaultErrorMessage: "input can't be blank",
 		})
-
+		console.log('loginValidationError', loginValidationError)
 		setLoginError(loginValidationError)
 
 		if (isPass) {
@@ -37,19 +38,20 @@ function ForgetPassword() {
 				email,
 				origin,
 			})
-				.then((resp) => {
+				.then(() => {
 					AlertModal({ type: 'success', content: 'Email sent! Check your email!' })
 				})
 				.catch(({ response }) => AlertModal({ type: 'error', content: response?.data?.message }))
 		}
 	}
+	console.log('loginError', loginError)
 	return (
 		<>
 			<Title>Forget Password</Title>
 			<AntdInput
-				isError={errorMessageHandler('error', loginError.email?.msg)}
+				isError={errorMessageHandler('error', loginError?.email?.msg)}
 				value={email}
-				onChange={({ target: { value } }) => setEmail(value)}
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
 				text={() => <Text isRequired={true}>Email</Text>}
 			/>
 			<AntdButton onClick={handleSubmit}>Send Email</AntdButton>

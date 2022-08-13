@@ -1,6 +1,7 @@
 import Container from '@/components/style/Container'
 import Lottie from 'lottie-react'
-import notFoundImage from '@/assets/notFoundImage'
+import notFoundImage from '@/assets/notFoundImage.json'
+// import notFoundImage from '../assets/notFoundImage.json'
 import styled from 'styled-components'
 
 const StyledContainer = styled(Container)`
