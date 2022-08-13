@@ -1,4 +1,4 @@
-import handleValidation, { ErrorResult, ErrorReturn } from 'react-client-validation'
+import handleValidation, { ErrorReturn } from 'react-client-validation'
 
 import AlertModal from '@/components/AlertModal'
 import AntdButton from '@/components/shared/AntdButton'

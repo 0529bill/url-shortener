@@ -4,6 +4,7 @@ import { MailOutlined, SettingOutlined } from '@ant-design/icons'
 
 import { MenuInfo } from 'rc-menu/lib/interface'
 import { MenuOutlined } from '@ant-design/icons'
+import { UserInfo } from '@/interfaces'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
 import { useEffect } from 'react'
@@ -21,7 +22,7 @@ function Navbar() {
 	const history = useHistory()
 	const { currentUser, userSignOut } = useCustomContext()
 	const [current, setCurrent] = useState('TinyURL')
-	const [targetedUser, setCurrentUser] = useState(null)
+	const [targetedUser, setCurrentUser] = useState<UserInfo | null>(null)
 	const handleMenuClick = (e: MenuInfo) => {
 		setCurrent(e.key)
 	}
@@ -42,7 +43,7 @@ function Navbar() {
 		return ''
 	}
 
-	const renderUser = (user) => {
+	const renderUser = (user: UserInfo) => {
 		if (!user) return
 		const {
 			result: { username },
@@ -100,7 +101,7 @@ function Navbar() {
 	]
 
 	useEffect(() => {
-		let user = currentUser()
+		let user: UserInfo = currentUser()
 		setCurrentUser(user)
 	}, [currentUser])
 

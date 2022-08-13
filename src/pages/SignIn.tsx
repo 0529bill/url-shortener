@@ -1,11 +1,11 @@
 import { Divider, Typography } from 'antd'
+import handleValidation, { ErrorReturn } from 'react-client-validation'
 
 import AntdButton from '@/components/shared/AntdButton'
 import AntdInput from '@/components/shared/AntdInput'
 import Container from '@/components/style/Container'
 import ErrorText from '@/components/shared/ErrorText'
 import Text from '@/components/shared/Text'
-import handleValidation from 'react-client-validation'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
 import { useHistory } from 'react-router-dom'
@@ -20,13 +20,10 @@ const StyledContainer = styled(Container)`
 `
 
 function SignIn() {
-	const [username, setUsername] = useState(null)
-	const [password, setPassword] = useState(null)
-	const [signInError, setSignInError] = useState({
-		username: null,
-		password: null,
-	})
-	const [passedResult, setPassedResult] = useState(null)
+	const [username, setUsername] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
+	const [signInError, setSignInError] = useState<ErrorReturn | null>(null)
+	const [passedResult, setPassedResult] = useState<{ msg: string } | null>(null)
 	const [forgetPassword, setforgetPassword] = useState(false)
 	const { userSignIn } = useCustomContext()
 	const { errorMessageHandler } = utils
@@ -78,13 +75,13 @@ function SignIn() {
 		<StyledContainer>
 			<Title>Sign in to TinyURL</Title>
 			<AntdInput
-				isError={errorMessageHandler('error', signInError.username?.msg)}
+				isError={errorMessageHandler('error', signInError?.username?.msg || null)}
 				value={username}
 				onChange={({ target: { value } }) => setUsername(value)}
 				text={() => <Text isRequired={true}>Username</Text>}
 			/>
 			<AntdInput
-				isError={errorMessageHandler('error', signInError.password?.msg)}
+				isError={errorMessageHandler('error', signInError?.password?.msg || null)}
 				value={password}
 				onChange={({ target: { value } }) => setPassword(value)}
 				text={() => <Text isRequired={true}>Password</Text>}

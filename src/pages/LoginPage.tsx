@@ -1,4 +1,5 @@
 import { Divider, Typography } from 'antd'
+import handleValidation, { ErrorReturn } from 'react-client-validation'
 
 import AntdButton from '@/components/shared/AntdButton'
 import AntdInput from '@/components/shared/AntdInput'
@@ -7,7 +8,6 @@ import Container from '@/components/style/Container'
 import ErrorText from '@/components/shared/ErrorText'
 import { Link } from 'react-router-dom'
 import Text from '@/components/shared/Text'
-import handleValidation from 'react-client-validation'
 import styled from 'styled-components'
 import { useCustomContext } from '@/contextProvider'
 import { useHistory } from 'react-router-dom'
@@ -23,15 +23,11 @@ const StyledContainer = styled(Container)`
 `
 
 function LoginPage() {
-	const [username, setUsername] = useState(null)
-	const [password, setPassword] = useState(null)
-	const [email, setEmail] = useState(null)
-	const [loginError, setLoginError] = useState({
-		username: null,
-		password: null,
-		email: null,
-	})
-	const [passedResult, setPassedResult] = useState(null)
+	const [username, setUsername] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
+	const [email, setEmail] = useState<string>('')
+	const [loginError, setLoginError] = useState<ErrorReturn | null>(null)
+	const [passedResult, setPassedResult] = useState<{ msg: string } | null>(null)
 	const { createUser } = useCustomContext()
 
 	let history = useHistory()
@@ -88,19 +84,19 @@ function LoginPage() {
 				Sign up with:
 				<Divider>OR</Divider>
 				<AntdInput
-					isError={errorMessageHandler('error', loginError.username?.msg)}
+					isError={errorMessageHandler('error', loginError?.username?.msg || null)}
 					value={username}
 					onChange={({ target: { value } }) => setUsername(value)}
 					text={() => <Text isRequired={true}>Username</Text>}
 				/>
 				<AntdInput
-					isError={errorMessageHandler('error', loginError.email?.msg)}
+					isError={errorMessageHandler('error', loginError?.email?.msg || null)}
 					value={email}
 					onChange={({ target: { value } }) => setEmail(value)}
 					text={() => <Text isRequired={true}>Email</Text>}
 				/>
 				<AntdInput
-					isError={errorMessageHandler('error', loginError.password?.msg)}
+					isError={errorMessageHandler('error', loginError?.password?.msg || null)}
 					value={password}
 					onChange={({ target: { value } }) => setPassword(value)}
 					text={() => <Text isRequired={true}>Password</Text>}

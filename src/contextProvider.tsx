@@ -95,9 +95,6 @@ export const ContextApiProvider = ({ children }: Props) => {
 	}
 
 	const userSignIn = async ({ userInfo, setPassedResult, history }: UserProps) => {
-		console.log('userInfo', userInfo)
-		console.log('setPassedResult', setPassedResult)
-
 		setSpinning()
 		try {
 			let signInResult: AxiosResponse = await api.userSignIn(userInfo)
@@ -111,7 +108,8 @@ export const ContextApiProvider = ({ children }: Props) => {
 			if (error?.headers?.rtn === RTNCODES.RtnCodes.UserNotFound) {
 				setStopSpinning()
 				setAlert({ type: 'error', content: 'User not found!' })
-				return setPassedResult({ msg: 'User not found!' })
+				setPassedResult({ msg: 'User not found!' })
+				return
 			}
 			setStopSpinning()
 			setAlert({ type: 'error', content: 'Failed to sign in!' })

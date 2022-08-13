@@ -5,8 +5,8 @@ const Text = styled.div`
 	font-size: 1.1rem;
 `
 
-function ErrorText({ children }: { children: React.ReactNode }) {
-	return <Text>{children}</Text>
+function ErrorText({ children, ...props }: { children?: React.ReactNode; style?: React.CSSProperties }) {
+	return <Text {...props}>{children}</Text>
 }
 
 export default ErrorText

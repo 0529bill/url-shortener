@@ -14,11 +14,7 @@ import utils from '@/utils'
 const { Title, Paragraph } = Typography
 const { errorMessageHandler, emailTester } = utils
 
-interface TopicDetailProps extends RouteComponentProps<string> {
-	// any other props (leave empty if none)
-}
-
-function ResetPassword<TopicDetailProps>({ match }: { match: TopicDetailProps }) {
+function ResetPassword({ match }: RouteComponentProps<{ username: string }>) {
 	const history = useHistory()
 	const [loginError, setLoginError] = useState<ErrorReturn>({ email: { msg: null }, newPassword: { msg: null } })
 	const [error, setError] = useState<string>('')
